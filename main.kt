@@ -7,20 +7,20 @@ fun main() {
     dragonFight(player, trogdor)
 }
 
-class Player(var name: String, var health: Int, val attackPower: Int) {
+class Player(var name: String?, var health: Int?, val attackPower: Int) {
     init {
         println("what is your name Traveller")
-        name = readln();
+        this.name = readln();
         println("lets see how powerful you are")
-        health = floor(Math.random() * 100).toInt()
+        this.health = floor(Math.random() * 100).toInt()
     }
     fun attack(opponent: Dragon) {
         println("$name attacks ${opponent.name} for $attackPower damage.")
         opponent.health = opponent.health!! - attackPower
     }
-    fun defend(opponent: Dragon){
-        currentDamage=(opponent.attackPower!! /2)
-    }
+//    fun defend(opponent: Dragon){
+//        currentDamage=(opponent.attackPower!! /2)
+//    }
 }
 
 class Dragon(var name: String, var health: Int?, var attackPower: Int?) {
@@ -43,19 +43,21 @@ class Dragon(var name: String, var health: Int?, var attackPower: Int?) {
             println("WRONG MAXIMUM POWER")
             thisAttack=(attackPower)
         }
-        opponent.health -= thisAttack.floor()
+        if (thisAttack != null) {
+            opponent.health = opponent.health?.minus(thisAttack)
+        }
     }
 }
 
 fun dragonFight(player: Player, dragon: Dragon) {
-    while (player.health > 0 && dragon.health!! > 0) {
+    while (player.health!! > 0 && dragon.health!! > 0) {
         player.attack(dragon)
         if (dragon.health!! <= 0) {
             println("${dragon.name} is defeated! ${player.name} wins!")
             break
         }
         dragon.attack(player)
-        if (player.health <= 0) {
+        if (player.health!! <= 0) {
             println("${player.name} is defeated! ${dragon.name} wins!")
             break
         }
